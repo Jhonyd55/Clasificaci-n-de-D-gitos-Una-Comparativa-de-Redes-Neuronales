@@ -1,0 +1,26 @@
+.resultado {
+    font-weight:  bold;
+    font-size:  6rem;
+    text-align: center;
+    display:  inline-block;
+  }
+
+  table {
+    margin: 0 auto;
+  }
+
+  table, th, tr, td {
+      border: 1px solid #ccc;
+  }
+
+  th {
+    padding: 10px;
+  }
+
+  .canvas-container {
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      display: flex;
+      justify-content: center;
+      
+  }
