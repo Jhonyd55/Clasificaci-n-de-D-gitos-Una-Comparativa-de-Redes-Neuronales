@@ -3,7 +3,7 @@ var modelo2 = null;
 var modelo3 = null;
 var modelo4 = null;
 
-//Tomar y configurar el canvas
+
 var canvas = document.getElementById("bigcanvas");
 var ctx1 = canvas.getContext("2d");
 var smallcanvas = document.getElementById("smallcanvas");
@@ -30,8 +30,8 @@ function predecir() {
           }
       }
 
-      arr = [arr]; //Meter el arreglo en otro arreglo por que si no tio tensorflow se enoja >:(
-      //Nah basicamente Debe estar en un arreglo nuevo en el indice 0, por ser un tensor4d en forma 1, 28, 28, 1
+      arr = [arr]; //estructura de un tensorflowjs
+      
       var tensor4 = tf.tensor4d(arr);
 
       //Modelo 1
@@ -155,10 +155,6 @@ function predecir() {
     modelo3 = await tf.loadGraphModel("NNS/CNN+DATA_AUMENTATION+DROUP/model.json");
     //modelo3 = await tf.loadLayersModel("numeros_conv_ad_do_model.json");
     console.log("Modelo 3 cargado...");
-/*
-    console.log("Cargando modelo 4...");
-    modelo4 = await tf.loadLayersModel("NNS/numeros_conv_ad_do_model_200.json");
-    //modelo4 = await tf.loadLayersModel("numeros_conv_ad_do_model_200.json");
-    console.log("Modelo 4 cargado...");
-*/
+
 })();
+
