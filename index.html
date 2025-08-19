@@ -1,105 +1,98 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <title>Números</title>
-  <link rel="stylesheet" href="CSS/style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
- 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificación de Dígitos: Una Comparativa de Redes Neuronales</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 </head>
-
 <body>
 
-  <main>
-    <div class="px-4 py-2 my-2 text-center border-bottom">
+    <header>
+        <div class="header-container">
+            <h1>Clasificación de Dígitos: Una Comparativa de Redes Neuronales</h1>
+            <a href="https://colab.research.google.com/drive/1O_jcehgfu8QUmd7V1AqtBt_EN9QSvC-s" target="_blank" class="colab-link">
+                <img src="https://colab.research.google.com/img/colab_favicon_256px.png" alt="Colab Icon" class="colab-icon">
+                Abrir en Colab
+            </a>
+        </div>
+    </header>
 
-      <h1 class="display-5 fw-bold">Evaluador de Redes Neuronales para Dígitos Escritos a Mano</h1>
-      <div class="col-lg-6 mx-auto">
-        
-        <p class="lead mb-0">Esta Predicci&oacute;n permite dibujar n&uacute;meros a mano alzada y procesarlos con cuatro modelos distintos de redes neuronales entrenados con TensorFlow.js.
-          Cada modelo utiliza una arquitectura diferente (densa, convolucional simple y variantes con t&eacute;cnicas de regularizaci&oacute;n como Dropout y Adaptive Dropout)
-          para predecir el d&iacute;gito escrito. El objetivo es comparar el rendimiento y la precisi&oacute;n de cada modelo en tiempo real.</p>
-      </div>
-    </div>
+    <main>
+        <section class="introduction">
+            <h2>Introducción al Proyecto</h2>
+            <p>Este proyecto explora la tarea de clasificación de dígitos escritos a mano utilizando el famoso conjunto de datos <strong>MNIST</strong>. El objetivo principal es comparar el rendimiento de tres arquitecturas de redes neuronales diferentes: una <strong>red neuronal densa</strong>, una <strong>red neuronal convolucional (CNN)</strong> y una <strong>red convolucional con técnicas de aumento de datos y Dropout</strong>.</p>
+            <p>A lo largo de este proyecto, se analizan métricas clave como la <strong>precisión (accuracy)</strong> y la <strong>pérdida (loss)</strong> para cada modelo. Las visualizaciones a continuación, generadas a partir de los logs de entrenamiento, muestran el progreso de cada modelo a lo largo de las épocas, permitiendo una comparación visual de su desempeño.</p>
+        </section>
 
-    <div class="b-example-divider"></div>
-
-    <div class="container mt-5">
-      <div class="row">
-        <div class="col-12 col-md-4 offset-md-4" >
-          <div id="canvas-container" class="canvas-container" >
-            <canvas id="bigcanvas" width="200" height="200" style="border:1px solid #525151; " ></canvas>
-            <canvas id="smallcanvas" width="28" height="28" style="display: none"></canvas>
-          </div>
-          <div >
-            <div class="text-center mt-3">
-              <button class="btn btn-primary" id="limpiar" onclick="limpiar()">Limpiar</button>
-              <button class="btn btn-success" id="predecir" onclick="predecir()">Predecir</button>
+        <section class="tensorboard-visualizations">
+            <h2>Gráficas de Entrenamiento</h2>
+            <p>Estas gráficas dinámicas muestran la precisión y la pérdida durante el entrenamiento de cada modelo. Puedes explorar cómo cada red neuronal mejora con el tiempo.</p>
+            <div class="visualization-grid">
+                <div class="visualization-item">
+                    <h3>Precisión del Modelo Densa</h3>
+                    <canvas id="denseAccuracyChart"></canvas>
+                </div>
+                <div class="visualization-item">
+                    <h3>Pérdida del Modelo Densa</h3>
+                    <canvas id="denseLossChart"></canvas>
+                </div>
+                <div class="visualization-item">
+                    <h3>Precisión del Modelo CNN</h3>
+                    <canvas id="cnnAccuracyChart"></canvas>
+                </div>
+                <div class="visualization-item">
+                    <h3>Pérdida del Modelo CNN</h3>
+                    <canvas id="cnnLossChart"></canvas>
+                </div>
+                <div class="visualization-item">
+                    <h3>Precisión del Modelo CNN con Augmentation</h3>
+                    <canvas id="cnnAugAccuracyChart"></canvas>
+                </div>
+                <div class="visualization-item">
+                    <h3>Pérdida del Modelo CNN con Augmentation</h3>
+                    <canvas id="cnnAugLossChart"></canvas>
+                </div>
             </div>
-          </div>
+        </section>
+        
+        <section class="interactive-canvas">
+            <h2>Demostración Interactiva</h2>
+            <p>Dibuja un dígito en el recuadro de abajo para ver cómo los tres modelos lo clasifican. Después de dibujar, haz clic en el botón "Predecir" para ver los resultados.</p>
+            <div class="canvas-container">
+                <canvas id="bigcanvas" width="400" height="400"></canvas>
+                <div class="canvas-buttons">
+                    <button id="predict-btn">Predecir</button>
+                    <button id="clear-btn">Borrar</button>
+                </div>
+            </div>
+            
+            <div class="results-container">
+                <div class="result-box">
+                    <h3>Red Densa</h3>
+                    <p id="result-dense">Esperando...</p>
+                </div>
+                <div class="result-box">
+                    <h3>Red Convolucional</h3>
+                    <p id="result-cnn">Esperando...</p>
+                </div>
+                <div class="result-box">
+                    <h3>Red CNN con Data Augmentation</h3>
+                    <p id="result-cnn-aug">Esperando...</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
-          <div class="mt-2 text-center">
-            <table>
-              <thead>
-                <th>Modo 1 (Denso)</th>
-                <th>Modo 2 (Conv)</th>
-                <th>Modo 3 (Conv+AD+DO)</th>
-                <th>Modo 4 (Conv+AD+DO) 200</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div id="resultado" class="resultado"></div>
-                  </td>
-                  <td>
-                    <div id="resultado2" class="resultado"></div>
-                  </td>
-                  <td>
-                    <div id="resultado3" class="resultado"></div>
-                  </td>
-                  <td>
-                    <div id="resultado4" class="resultado"></div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="b-example-divider"></div>
+    <footer>
+        <p>&copy; 2025 Proyecto de Clasificación de Dígitos</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/fabric.min.js"></script>
+    <script src="js/drawing.js"></script>
+    <script src="js/javascript.js"></script>
 
-    <div class="bg-dark text-secondary mt-5 px-4 py-2 text-center">
-      <div class="py-5">
-        <h1 class="display-5 fw-bold text-white">Ringa Tech</h1>
-        <div class="col-lg-6 mx-auto">
-          <p class="fs-5 mb-4">Revisa <a href="https://youtube.com/RingaTech">mi canal</a> para videos de inteligencia
-            artificial, programación, etc.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="b-example-divider mb-0"></div>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
-  <script src="JS/fabric.min.js"></script>
-  <script src="JS/drawing.js"></script>
-
-  <script src="JS/javascript.js"></script>
 </body>
-
 </html>
