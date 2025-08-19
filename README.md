@@ -36,14 +36,19 @@ Además de probar los modelos en tiempo real, se visualizan gráficos de precisi
 
 | Tecnología | Descripción | Icono |
 | :--- | :--- | :--- |
-| **TensorFlow.js** | Motor de IA para ejecutar modelos en el navegador. | ![TensorFlow Icon](https://www.tensorflow.org/images/tf_logo_social.png) |
-| **Redes Neuronales**| Las arquitecturas que impulsan la predicción. | ![Neural Network Icon](https://i.imgur.com/K1x56gB.png) |
-| **Google Colab** | Accede al notebook original para ver el código de entrenamiento. | ![Colab Icon](https://colab.research.google.com/img/colab_favicon_256px.png) |
+| **TensorFlow.js** | Motor de IA para ejecutar modelos en el navegador. |<img src="https://www.tensorflow.org/images/tf_logo_social.png" width="200" height=auto align="center">|
+| **Redes Neuronales**| Las arquitecturas que impulsan la predicción. |<img src="image/red_neuronal.png" width="200" height=auto align="center">   |
+| **Google Colab** | Accede al notebook original para ver el código de entrenamiento. | <img src="https://colab.research.google.com/img/colab_favicon_256px.png" width="200" height=auto align="center"> |
 
-**Enlace a Google Colab:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1O_jcehgfu8QUmd7V1AqtBt_EN9QSvC-s?usp=sharing)
+**Enlace a Google Colab:** <a href="https://colab.research.google.com/drive/1O_jcehgfu8QUmd7V1AqtBt_EN9QSvC-s?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" width="200" alt="Open In Colab"></a>
+
+
 
 ---
 
 ### **Licencia y Contribuciones**
 
 Este es un proyecto de código abierto. Todos los usuarios tienen permiso de lectura y pueden explorar el código y los archivos del proyecto. La licencia es **MIT**.
+
+
+
