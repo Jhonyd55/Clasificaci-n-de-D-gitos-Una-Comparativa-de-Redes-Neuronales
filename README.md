@@ -1,2 +1,2 @@
-# Clasificaci-n-de-D-gitos-Una-Comparativa-de-Redes-Neuronales
+# Clasificación de Dígitos: Una Comparativa de Redes Neuronales
 Clasificación de Dígitos con Redes Neuronales  Proyecto web interactivo que compara 3 redes neuronales (Densa, CNN y CNN con Data Augmentation) en la clasificación de dígitos escritos a mano. Incluye gráficos de precisión y pérdida, además de un canvas para probar los modelos en tiempo real. Ideal para entender la IA de manera práctica.
