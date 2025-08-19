@@ -35,30 +35,50 @@ function predecir() {
       var tensor4 = tf.tensor4d(arr);
 
       //Modelo 1
-      var resultados = modelo.predict(tensor4).dataSync();
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
+      var resultados1 = modelo.predict(tensor4).dataSync();
+      var mayorIndice = resultados1.indexOf(Math.max.apply(null, resultados1));
       console.log("Prediccion 1", mayorIndice);
       document.getElementById("resultado").innerHTML = mayorIndice;
 
       //Modelo 2
-      var resultados = modelo2.predict(tensor4).dataSync();
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
+      var resultados2 = modelo2.predict(tensor4).dataSync();
+      var mayorIndice = resultados2.indexOf(Math.max.apply(null, resultados2));
       console.log("Prediccion 2", mayorIndice);
       document.getElementById("resultado2").innerHTML = mayorIndice;
 
       //Modelo 3
-      var resultados = modelo3.predict(tensor4).dataSync();
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
+      var resultados3 = modelo3.predict(tensor4).dataSync();
+      var mayorIndice = resultados3.indexOf(Math.max.apply(null, resultados3));
       console.log("Prediccion 3", mayorIndice);
       document.getElementById("resultado3").innerHTML = mayorIndice;
-/*
-      //Modelo 4
-      var resultados = modelo4.predict(tensor4).dataSync();
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
-      console.log("Prediccion 4", mayorIndice);
-      document.getElementById("resultado4").innerHTML = mayorIndice;
- */
+      displayResults(resultados1, resultados2, resultados3);
     }
+
+function displayResults(pred1, pred2, pred3) {
+  // Obtener el dígito con mayor probabilidad para cada modelo
+  const digit1 = pred1.indexOf(Math.max(...pred1));
+  const digit2 = pred2.indexOf(Math.max(...pred2));
+  const digit3 = pred3.indexOf(Math.max(...pred3));
+  
+  // Obtener la confianza (convertir a porcentaje)
+  const confidence1 = (Math.max(...pred1) * 100).toFixed(1);
+  const confidence2 = (Math.max(...pred2) * 100).toFixed(1);
+  const confidence3 = (Math.max(...pred3) * 100).toFixed(1);
+  
+  // Actualizar la interfaz
+  document.getElementById('resultado').textContent = digit1;
+  document.getElementById('resultado2').textContent = digit2;
+  document.getElementById('resultado3').textContent = digit3;
+  
+  document.getElementById('confidence1').style.width = `${confidence1}%`;
+  document.getElementById('confidence1').textContent = `${confidence1}%`;
+  
+  document.getElementById('confidence2').style.width = `${confidence2}%`;
+  document.getElementById('confidence2').textContent = `${confidence2}%`;
+  
+  document.getElementById('confidence3').style.width = `${confidence3}%`;
+  document.getElementById('confidence3').textContent = `${confidence3}%`;
+}
 
   /**
    * Hermite resize - fast image resize/resample using Hermite filter. 1 cpu version!
@@ -157,4 +177,5 @@ function predecir() {
     console.log("Modelo 3 cargado...");
 
 })();
+
 
