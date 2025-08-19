@@ -4,92 +4,198 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+ <!---  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">--> 
     <title>Clasificación de Dígitos con IA</title>
     <link rel="stylesheet" href="CSS/style.css">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <main class="container py-4">
-        <header class="text-center pb-3 mb-4 header-section">
-            <h1 class="display-5 fw-bold text-white">Clasificación de Dígitos con Redes Neuronales</h1>
-            <div class="col-lg-8 mx-auto">
-                <p class="lead mb-0 text-white-50">
+    <main class="container my-5 shadow-lg rounded-3 overflow-hidden">
+        <!-- Hero Section -->
+        <header class="text-center py-5 gradient-bg text-white">
+            <div class="container">
+                <h1 class="display-4 fw-bold mb-4">Clasificación de Dígitos con Redes Neuronales</h1>
+                <p class="lead mb-4 opacity-75">
                     Una aplicación interactiva para comparar el rendimiento de diferentes arquitecturas de redes neuronales en la clasificación de dígitos escritos a mano.
                 </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="#demo" class="btn btn-light btn-lg px-4">Probar Demo</a>
+                    <a href="#models" class="btn btn-outline-light btn-lg px-4">Ver Modelos</a>
+                </div>
             </div>
         </header>
 
-        <section class="row align-items-center mb-4 main-content-section">
-            <div class="col-12 col-md-6 d-flex flex-column align-items-center mb-4 mb-md-0">
-                <h2 class="h4 mb-3 text-white">Dibuja un dígito aquí</h2>
-                <div id="canvas-container" class="canvas-container">
-                    <canvas id="bigcanvas" width="200" height="200" style="border:1px solid #ffffff;"></canvas>
-                    <canvas id="smallcanvas" width="28" height="28" style="display: none;"></canvas>
-                </div>
-                <div class="mt-3 button-group">
-                    <button class="btn btn-primary" id="limpiar" onclick="limpiar()">Limpiar</button>
-                    <button class="btn btn-success" id="predecir" onclick="predecir()">Predecir</button>
-                </div>
-            </div>
-            
-            <div class="col-12 col-md-6 d-flex flex-column align-items-center">
-                <h2 class="h4 mb-3 text-white">Resultados de la Predicción</h2>
-                <div class="table-responsive prediction-table">
-                    <table class="table text-center table-borderless">
-                        <thead>
-                            <tr class="text-white-50">
-                                <th>Modelo 1</th>
-                                <th>Modelo 2</th>
-                                <th>Modelo 3</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><div id="resultado" class="resultado fw-bold fs-2 text-white"></div></td>
-                                <td><div id="resultado2" class="resultado fw-bold fs-2 text-white"></div></td>
-                                <td><div id="resultado3" class="resultado fw-bold fs-2 text-white"></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <!-- Demo Section -->
+        <section id="demo" class="py-5 bg-white">
+            <div class="container">
+                <h2 class="text-center mb-5 fw-bold text-primary">Prueba el Clasificador</h2>
+                
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body p-4">
+                                <h3 class="h5 mb-4 text-center text-secondary">Dibuja un dígito (0-9)</h3>
+                                <div class="canvas-container bg-dark rounded-3 p-3 mx-auto" style="width: fit-content;">
+                                    <canvas id="bigcanvas" width="280" height="280" class="bg-white rounded-2"></canvas>
+                                    <canvas id="smallcanvas" width="28" height="28" style="display: none;"></canvas>
+                                </div>
+                                <div class="d-flex justify-content-center gap-3 mt-4">
+                                    <button class="btn btn-outline-danger" id="limpiar" onclick="limpiar()">
+                                        <i class="fas fa-eraser me-2"></i>Limpiar
+                                    </button>
+                                    <button class="btn btn-primary" id="predecir" onclick="predecir()">
+                                        <i class="fas fa-brain me-2"></i>Predecir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4">
+                                <h3 class="h5 mb-4 text-center text-secondary">Resultados de Predicción</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="text-center">Modelo</th>
+                                                <th class="text-center">Predicción</th>
+                                                <th class="text-center">Confianza</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-bold">Modelo 1</td>
+                                                <td class="text-center"><span id="resultado" class="badge bg-primary rounded-pill fs-5">-</span></td>
+                                                <td>
+                                                    <div class="progress" style="height: 24px;">
+                                                        <div id="confidence1" class="progress-bar bg-primary" role="progressbar" style="width: 0%">0%</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold">Modelo 2</td>
+                                                <td class="text-center"><span id="resultado2" class="badge bg-success rounded-pill fs-5">-</span></td>
+                                                <td>
+                                                    <div class="progress" style="height: 24px;">
+                                                        <div id="confidence2" class="progress-bar bg-success" role="progressbar" style="width: 0%">0%</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold">Modelo 3</td>
+                                                <td class="text-center"><span id="resultado3" class="badge bg-info rounded-pill fs-5">-</span></td>
+                                                <td>
+                                                    <div class="progress" style="height: 24px;">
+                                                        <div id="confidence3" class="progress-bar bg-info" role="progressbar" style="width: 0%">0%</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="alert alert-info mt-3 mb-0">
+                                    <i class="fas fa-info-circle me-2"></i> Dibuja un dígito en el área blanca y haz clic en "Predecir" para ver los resultados.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <hr class="my-5 divider">
-
-        <section class="row justify-content-center text-center chart-section">
-            <div class="col-12 col-lg-10">
-                <h2 class="h4 mb-3 text-white">Gráficas de Precisión y Pérdida de Entrenamiento</h2>
-                <p class="text-muted text-white-50">
-                    Comparación de la precisión y pérdida de los modelos durante el entrenamiento.
+        <!-- Models Performance Section -->
+        <section id="models" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5 fw-bold text-primary">Rendimiento de los Modelos</h2>
+                <p class="text-center text-muted mb-5">
+                    Comparación de la precisión y pérdida durante el entrenamiento de los diferentes modelos.
                 </p>
-                <div class="chart-container">
-                    <canvas id="myChart" width="400" height="200"></canvas>
+                
+                <div class="card shadow-sm border-0 mb-5">
+                    <div class="card-body p-4">
+                        <div class="chart-container" style="position: relative; height: 400px;">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4 text-center">
+                                <div class="icon-circle bg-primary-light mb-4 mx-auto">
+                                    <i class="fas fa-cogs text-primary fs-3"></i>
+                                </div>
+                                <h3 class="h5 mb-3">Modelo 1</h3>
+                                <p class="text-muted mb-0">Arquitectura simple con 1 capa densa. Buen rendimiento para clasificación básica.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4 text-center">
+                                <div class="icon-circle bg-success-light mb-4 mx-auto">
+                                    <i class="fas fa-project-diagram text-success fs-3"></i>
+                                </div>
+                                <h3 class="h5 mb-3">Modelo 2</h3>
+                                <p class="text-muted mb-0">Red convolucional (CNN) con 2 capas. Mayor precisión para reconocimiento de patrones.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4 text-center">
+                                <div class="icon-circle bg-info-light mb-4 mx-auto">
+                                    <i class="fas fa-network-wired text-info fs-3"></i>
+                                </div>
+                                <h3 class="h5 mb-3">Modelo 3</h3>
+                                <p class="text-muted mb-0">Arquitectura avanzada con capas densas intermedias. Balance entre precisión y velocidad.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <hr class="my-5 divider">
-
-        <footer class="text-secondary px-4 py-2 footer-section">
-            <div class="py-3 text-center">
-                <h1 class="display-5 fw-bold text-white">jhonyd55</h1>
-                <p class="fs-5 mb-0 text-white-50">
-                    Desarrollador de proyectos de Machine Learning. Este trabajo es una demostración de la implementación de modelos de IA directamente en el navegador web.
-                </p>
-                <div class="mt-3">
-                    <a href="https://www.tensorflow.org/js?hl=es-419" target="_blank" class="text-white text-decoration-none mx-2 footer-link">
-                        TensorFlow.js
-                    </a>
-                    <span class="text-white mx-1">|</span>
-                    <a href="https://github.com/jhonyd55" target="_blank" class="text-white text-decoration-none mx-2 footer-link">
-                        GitHub
-                    </a>
+        <!-- Footer -->
+        <footer class="py-5 bg-dark text-white">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h2 class="display-6 fw-bold mb-3">jhonyd55</h2>
+                        <p class="mb-4 opacity-75">
+                            Desarrollador de proyectos de Machine Learning. Este trabajo es una demostración de la implementación de modelos de IA directamente en el navegador web.
+                        </p>
+                        <div class="d-flex gap-3">
+                            <a href="https://www.tensorflow.org/js?hl=es-419" target="_blank" class="btn btn-outline-light rounded-pill">
+                                <i class="fab fa-google me-2"></i>TensorFlow.js
+                            </a>
+                            <a href="https://github.com/jhonyd55" target="_blank" class="btn btn-outline-light rounded-pill">
+                                <i class="fab fa-github me-2"></i>GitHub
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card bg-dark-2 border-0">
+                            <div class="card-body p-4">
+                                <h3 class="h5 mb-3">Acerca del Proyecto</h3>
+                                <p class="small opacity-75 mb-0">
+                                    Este proyecto utiliza TensorFlow.js para implementar modelos de redes neuronales que clasifican dígitos escritos a mano. Los modelos fueron entrenados con el conjunto de datos MNIST y optimizados para funcionar en navegadores web.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4 border-secondary">
+                <div class="text-center small opacity-75">
+                    © 2023 jhonyd55. Todos los derechos reservados.
                 </div>
             </div>
         </footer>
@@ -101,7 +207,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="JS/fabric.min.js"></script>
-    <script src="JS/drawing.js"></script>
     <script src="JS/javascript.js"></script>
     
     <script>
@@ -120,41 +225,74 @@
                         type: 'line',
                         data: {
                             labels: labels,
-                            datasets: [{
-                                label: 'Pérdida (Modelo 1)',
-                                data: history1.loss,
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                fill: false,
-                                tension: 0.1
-                            }, {
-                                label: 'Precisión (Modelo 1)',
-                                data: history1.accuracy,
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                fill: false,
-                                tension: 0.1
-                            }, {
-                                label: 'Pérdida (Modelo 2)',
-                                data: history2.loss,
-                                borderColor: 'rgba(255, 159, 64, 1)',
-                                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                                fill: false,
-                                tension: 0.1
-                            }, {
-                                label: 'Precisión (Modelo 2)',
-                                data: history2.accuracy,
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                fill: false,
-                                tension: 0.1
-                            }]
+                            datasets: [
+                                {
+                                    label: 'Precisión Modelo 1',
+                                    data: history1.accuracy,
+                                    borderColor: '#4e73df',
+                                    backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                                    borderWidth: 2,
+                                    tension: 0.3,
+                                    fill: true
+                                },
+                                {
+                                    label: 'Pérdida Modelo 1',
+                                    data: history1.loss,
+                                    borderColor: '#e74a3b',
+                                    backgroundColor: 'rgba(231, 74, 59, 0.05)',
+                                    borderWidth: 2,
+                                    tension: 0.3,
+                                    fill: true
+                                },
+                                {
+                                    label: 'Precisión Modelo 2',
+                                    data: history2.accuracy,
+                                    borderColor: '#1cc88a',
+                                    backgroundColor: 'rgba(28, 200, 138, 0.05)',
+                                    borderWidth: 2,
+                                    tension: 0.3,
+                                    fill: true
+                                },
+                                {
+                                    label: 'Pérdida Modelo 2',
+                                    data: history2.loss,
+                                    borderColor: '#f6c23e',
+                                    backgroundColor: 'rgba(246, 194, 62, 0.05)',
+                                    borderWidth: 2,
+                                    tension: 0.3,
+                                    fill: true
+                                }
+                            ]
                         },
                         options: {
                             responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Rendimiento durante el Entrenamiento',
+                                    font: {
+                                        size: 16
+                                    }
+                                },
+                                tooltip: {
+                                    mode: 'index',
+                                    intersect: false
+                                }
+                            },
                             scales: {
                                 y: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Valor'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Épocas de Entrenamiento'
+                                    }
                                 }
                             }
                         }
