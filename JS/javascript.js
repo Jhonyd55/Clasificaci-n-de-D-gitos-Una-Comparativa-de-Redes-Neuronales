@@ -119,31 +119,42 @@ async function predecir() {
         // Redimensionar imagen a 28x28 píxeles
         resample_single(canvas, 28, 28, smallcanvas);
         
-        // Obtener y procesar los datos de la imagen
+        // Obtener los datos de la imagen
         const imgData = ctx2.getImageData(0, 0, 28, 28);
-        const processedData = preprocessImageData(imgData);
         
-        // Convertir a tensor 4D
-        const tensor4 = tf.tensor4d(processedData, [1, 28, 28, 1]);
+        // Procesar los datos de la imagen correctamente
+        const imageArray = [];
+        for (let i = 0; i < imgData.data.length; i += 4) {
+            // Convertir a escala de grises e invertir (MNIST usa fondo blanco)
+            const grayValue = 255 - (
+                0.299 * imgData.data[i] + 
+                0.587 * imgData.data[i + 1] + 
+                0.114 * imgData.data[i + 2]
+            );
+            // Normalizar a [0, 1]
+            imageArray.push(grayValue / 255);
+        }
         
-        // Realizar predicciones con los tres modelos
+        // Crear el tensor con la forma correcta [batch, height, width, channels]
+        const tensorData = tf.tensor4d(imageArray, [1, 28, 28, 1]);
+        
+        // Realizar predicciones
         const [resultados1, resultados2, resultados3] = await Promise.all([
-            modelo.predict(tensor4).array(),
-            modelo2.predict(tensor4).array(),
-            modelo3.predict(tensor4).array()
+            modelo.predict(tensorData).array(),
+            modelo2.predict(tensorData).array(),
+            modelo3.predict(tensorData).array()
         ]);
         
         // Mostrar resultados
-        displayResults(resultados1[0][0], resultados2[0][0], resultados3[0][0]);
+        displayResults(resultados1[0], resultados2[0], resultados3[0]);
         
         // Liberar memoria del tensor
-        tensor4.dispose();
+        tensorData.dispose();
     } catch (error) {
         console.error("Error durante la predicción:", error);
         alert("Ocurrió un error al realizar la predicción. Por favor intenta nuevamente.");
     }
 }
-
 // Procesamiento de los datos de la imagen
 function preprocessImageData(imgData) {
     const arr = [];
@@ -312,3 +323,4 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCanvas();
     cargarModelos();
 });
+
