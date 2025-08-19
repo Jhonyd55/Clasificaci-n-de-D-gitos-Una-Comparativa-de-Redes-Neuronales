@@ -23,13 +23,14 @@ function initDrawingCanvas() {
 }
 
 // Configuración de elementos
+var canvas = document.getElementById("bigcanvas");
+var ctx1 = canvas.getContext("2d");
 var smallcanvas = document.getElementById("smallcanvas");
-var ctx2 = smallcanvas.getContext("2d", { willReadFrequently: true });
+var ctx2= smallcanvas.getContext("2d");
 
 function limpiar() {
+    ctx1.clearRect(0, 0, canvas.width, canvas.height);
     drawingcanvas.clear();
-    drawingcanvas.backgroundColor = '#ffffff';
-    ctx2.clearRect(0, 0, smallcanvas.width, smallcanvas.height);
     
     // Limpiar resultados
     document.getElementById("resultado").textContent = "-";
@@ -184,4 +185,5 @@ function updateConfidenceBar(elementId, confidence) {
         alert("Error al cargar los modelos. Por favor revisa la consola para más detalles.");
     }
 })();
+
 
