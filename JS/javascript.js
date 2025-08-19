@@ -2,24 +2,10 @@ var modelo = null;
 var modelo2 = null;
 var modelo3 = null;
 var modelo4 = null;
-var brushWidth = 10;
+var brushWidth = 15;
 var color = "#000000";
 var drawingcanvas;
 
-(function() {
-  var $ = function(id){return document.getElementById(id)};
-
-  drawingcanvas = this.__canvas = new fabric.Canvas('bigcanvas', {
-    isDrawingMode: true
-  });
-
-  fabric.Object.prototype.transparentCorners = false;
-
-  if (drawingcanvas.freeDrawingBrush) {
-    drawingcanvas.freeDrawingBrush.color = color;
-    drawingcanvas.freeDrawingBrush.width = brushWidth;
-  }
-})();
 
 //Tomar y configurar el canvas
 var canvas = document.getElementById("bigcanvas");
@@ -27,9 +13,33 @@ var ctx1 = canvas.getContext("2d");
 var smallcanvas = document.getElementById("smallcanvas");
 var ctx2= smallcanvas.getContext("2d");
 
+
+(function() {
+    var $ = function(id){return document.getElementById(id)};
+  
+    drawingcanvas = this.__canvas = new fabric.Canvas('bigcanvas', {
+      isDrawingMode: true
+    });
+  
+    fabric.Object.prototype.transparentCorners = false;
+  
+    if (drawingcanvas.freeDrawingBrush) {
+      drawingcanvas.freeDrawingBrush.color = color;
+      drawingcanvas.freeDrawingBrush.width = brushWidth;
+    }
+  })();
+
 function limpiar() {
     ctx1.clearRect(0, 0, canvas.width, canvas.height);
     drawingcanvas.clear();
+
+    // Limpiar resultados
+    document.getElementById("resultado").textContent = "-";
+    document.getElementById("resultado2").textContent = "-";
+    document.getElementById("resultado3").textContent = "-";
+    
+    // Limpiar barras de confianza
+    resetConfidenceBars();
 }
 
 function predecir() {
@@ -53,29 +63,78 @@ function predecir() {
       var tensor4 = tf.tensor4d(arr);
 
       //Modelo 1
-      var resultados = modelo.predict(tensor4).dataSync();
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
+      var resultados1 = modelo.predict(tensor4).dataSync();
+      var mayorIndice = resultados1.indexOf(Math.max.apply(null, resultados1));
       console.log("Prediccion 1", mayorIndice);
       document.getElementById("resultado").innerHTML = mayorIndice;
 
       //Modelo 2
-      var resultados = modelo2.predict(tensor4).dataSync();
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
+      var resultados2 = modelo2.predict(tensor4).dataSync();
+      var mayorIndice = resultados2.indexOf(Math.max.apply(null, resultados2));
       console.log("Prediccion 2", mayorIndice);
       document.getElementById("resultado2").innerHTML = mayorIndice;
 
       //Modelo 3
-      var resultados = modelo3.predict(tensor4).dataSync();
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
+      var resultados3 = modelo3.predict(tensor4).dataSync();
+      var mayorIndice = resultados3.indexOf(Math.max.apply(null, resultados3));
       console.log("Prediccion 3", mayorIndice);
       document.getElementById("resultado3").innerHTML = mayorIndice;
-/*
-      //Modelo 4
-      var resultados = modelo4.predict(tensor4).dataSync();
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
-      console.log("Prediccion 4", mayorIndice);
-      document.getElementById("resultado4").innerHTML = mayorIndice;
- */
+
+      // Mostrar resultados
+      displayResults(
+        resultados1, 
+        resultados2, 
+        resultados3
+    );
+
+    }
+
+    function resetConfidenceBars() {
+        const bars = document.querySelectorAll('.progress-bar');
+        bars.forEach(bar => {
+            bar.style.width = '0%';
+            bar.textContent = '0%';
+            bar.className = 'progress-bar'; // Reset classes
+        });
+    }
+
+
+    function displayResults(pred1, pred2, pred3) {
+        // Obtener el dígito con mayor probabilidad para cada modelo
+        const digit1 = pred1.indexOf(Math.max(...pred1));
+        const digit2 = pred2.indexOf(Math.max(...pred2));
+        const digit3 = pred3.indexOf(Math.max(...pred3));
+        
+        // Calcular porcentajes de confianza
+        const confidence1 = (Math.max(...pred1) * 100).toFixed(1);
+        const confidence2 = (Math.max(...pred2) * 100).toFixed(1);
+        const confidence3 = (Math.max(...pred3) * 100).toFixed(1);
+        
+        // Actualizar la interfaz
+        document.getElementById('resultado').textContent = digit1;
+        document.getElementById('resultado2').textContent = digit2;
+        document.getElementById('resultado3').textContent = digit3;
+        
+        updateConfidenceBar('confidence1', confidence1);
+        updateConfidenceBar('confidence2', confidence2);
+        updateConfidenceBar('confidence3', confidence3);
+    }
+    
+    function updateConfidenceBar(elementId, confidence) {
+        const element = document.getElementById(elementId);
+        element.style.width = `${confidence}%`;
+        element.textContent = `${confidence}%`;
+        
+        // Cambiar color según la confianza
+        element.className = 'progress-bar'; // Reset classes
+        const confidenceValue = parseFloat(confidence);
+        if (confidenceValue > 80) {
+            element.classList.add('bg-success');
+        } else if (confidenceValue > 50) {
+            element.classList.add('bg-warning');
+        } else {
+            element.classList.add('bg-danger');
+        }
     }
 
   /**
@@ -173,10 +232,5 @@ function predecir() {
     modelo3 = await tf.loadGraphModel("NNS/CNN+DATA_AUMENTATION+DROUP/model.json");
     //modelo3 = await tf.loadLayersModel("numeros_conv_ad_do_model.json");
     console.log("Modelo 3 cargado...");
-/*
-    console.log("Cargando modelo 4...");
-    modelo4 = await tf.loadLayersModel("NNS/numeros_conv_ad_do_model_200.json");
-    //modelo4 = await tf.loadLayersModel("numeros_conv_ad_do_model_200.json");
-    console.log("Modelo 4 cargado...");
-*/
+
 })();
