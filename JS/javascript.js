@@ -8,10 +8,10 @@ var brushColor = "#000000";
 
 // Inicialización de Fabric.js Canvas
 function initDrawingCanvas() {
-  drawingcanvas = new fabric.Canvas('bigcanvas', {
-    isDrawingMode: true,
-    backgroundColor: '#ffffff',
-    selection: false
+   var $ = function(id){return document.getElementById(id)};
+
+  drawingcanvas = this.__canvas = new fabric.Canvas('bigcanvas', {
+    isDrawingMode: true
   });
 
   fabric.Object.prototype.transparentCorners = false;
@@ -184,3 +184,4 @@ function updateConfidenceBar(elementId, confidence) {
         alert("Error al cargar los modelos. Por favor revisa la consola para más detalles.");
     }
 })();
+
