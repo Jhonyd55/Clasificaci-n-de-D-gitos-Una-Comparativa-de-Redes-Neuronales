@@ -191,7 +191,7 @@ function resample_single(canvasSource, width, height, canvasTarget) {
     console.log("Modelo 2 cargado...");
 
     console.log("Cargando modelo 3...");
-    modelo3 = await tf.loadGraphModel("NNS/COMPLETA/model.json"); // Asumo que este es el modelo correcto
+    modelo3 = await tf.loadGraphModel("NNS/CNN+DATA_AUMENTATION+DROUP/model.json"); // Asumo que este es el modelo correcto
     console.log("Modelo 3 cargado...");
 
     // Si tienes un modelo 4, actívalo aquí
@@ -246,3 +246,4 @@ function updateConfidenceBar(elementId, confidence) {
         element.classList.add('bg-danger');
     }
 }
+
